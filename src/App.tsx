@@ -6,10 +6,10 @@ import Tips from "./components/Tips";
 import { menuItems } from "./data/db"
 import { reducer, initialState as orderInitialState, OrderState } from "./reducers/order";
 
-const initialState = (): OrderState  => {
+const initialState = (): OrderState => {
     const order = localStorage.getItem('order');
 
-    if (! order) {
+    if (!order) {
         return orderInitialState();
     }
 
@@ -39,8 +39,8 @@ function App() {
                                 ? menuItems.map(item => (
                                     <MenuItem
                                         key={item.id}
-                                            data={ item }
-                                            addToOrder={ (menuItem) => dispatch({ type: 'add-item-to-order', payload: { menuItem }}) } />
+                                        data={item}
+                                        addToOrder={(menuItem) => dispatch({ type: 'add-item-to-order', payload: { menuItem } })} />
                                 ))
                                 : null
                         }
@@ -55,12 +55,12 @@ function App() {
                             ? <>
                                 <OrderContent
                                     order={state.order}
-                                    removeFromOrder={ (orderItemID) => dispatch({ type: 'remove-item-from-order', payload: { orderItemID } }) }
+                                    removeFromOrder={(orderItemID) => dispatch({ type: 'remove-item-from-order', payload: { orderItemID } })}
                                 />
 
-                                <Tips setTip={ (tip) => dispatch({ type: 'set-tip', payload: { tip } }) } />
+                                <Tips setTip={(tip) => dispatch({ type: 'set-tip', payload: { tip } })} />
 
-                                <OrderTotal order={state.order} tip={state.tip} placeOrder={ () => dispatch({ type: 'place-order' }) } />
+                                <OrderTotal order={state.order} tip={state.tip} placeOrder={() => dispatch({ type: 'place-order' })} />
                             </>
                             : <p className="text-center">La orden esta vacia</p>
                     }

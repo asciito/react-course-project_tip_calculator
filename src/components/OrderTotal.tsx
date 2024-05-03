@@ -11,7 +11,7 @@ type OrdersTotalProps = {
 export default function OrderTotal({ order, tip, placeOrder }: OrdersTotalProps) {
     const subTotal = useCallback(() => order.reduce((total, item) => total + (item.qty * item.price), 0), [order])
     const tipTotal = useCallback(() => tip * subTotal(), [tip, subTotal]);
-    const total = useMemo(() => subTotal() + tipTotal(), [tipTotal]);
+    const total = useMemo(() => subTotal() + tipTotal(), [subTotal, tipTotal]);
 
     return (
         <>
@@ -36,8 +36,8 @@ export default function OrderTotal({ order, tip, placeOrder }: OrdersTotalProps)
             <button
                 className="w-full disabled:opacity-60 disabled:cursor-not-allowed transition-all bg-black p-3 uppercase text-white font-bold mt-10"
                 disabled={total === 0}
-                onClick={ () => placeOrder() }
-                >Guardar orden</button>
+                onClick={() => placeOrder()}
+            >Guardar orden</button>
         </>
     )
 }

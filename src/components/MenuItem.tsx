@@ -3,7 +3,7 @@ import type { MenuItem } from "../types";
 
 type MenuItemProps = {
     data: MenuItem
-    addToOrder: (orderItem: MenuItem) => void
+    addToOrder: (menuItem: MenuItem) => void
 }
 
 export default function MenuItem({ data, addToOrder }: MenuItemProps): ReactElement<MenuItemProps> {

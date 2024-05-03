@@ -34,7 +34,7 @@ export function reducer(state: OrderState, action: OrderAction): OrderState {
 
         return {
             tip,
-            order: order.map((orderItem, index) => orderIndex === index ? {...orderItem, qty: orderItem.qty + 1} : orderItem)
+            order: order.map((orderItem, index) => orderIndex === index ? { ...orderItem, qty: orderItem.qty + 1 } : orderItem)
         }
     }
 

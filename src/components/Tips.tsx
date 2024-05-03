@@ -17,7 +17,7 @@ const tipOptions = [
 ]
 
 type TipProps = {
-    setTip: React.Dispatch<React.SetStateAction<number>>
+    setTip: (tip: number) => void
 }
 
 export default function Tips({ setTip }: TipProps) {

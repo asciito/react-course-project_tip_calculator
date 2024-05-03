@@ -1,12 +1,27 @@
+import { useEffect, useReducer } from "react";
 import MenuItem from "./components/MenuItem"
 import OrderContent from "./components/OrderContent";
 import OrderTotal from "./components/OrderTotal";
 import Tips from "./components/Tips";
 import { menuItems } from "./data/db"
-import useOrder from "./hooks/order"
+import { reducer, initialState as orderInitialState, OrderState } from "./reducers/order";
+
+const initialState = (): OrderState  => {
+    const order = localStorage.getItem('order');
+
+    if (! order) {
+        return orderInitialState();
+    }
+
+    return JSON.parse(order);
+}
 
 function App() {
-    const { order, tip, setTip, addOrderItem, removeOrderItem, placeOrder } = useOrder();
+    const [state, dispatch] = useReducer(reducer, initialState());
+
+    useEffect(() => {
+        localStorage.setItem('order', JSON.stringify(state));
+    }, [state]);
 
     return (
         <>
@@ -21,7 +36,12 @@ function App() {
                     <div className="space-y-3 mt-10">
                         {
                             menuItems
-                                ? menuItems.map(item => <MenuItem key={item.id} data={item} addToOrder={addOrderItem} />)
+                                ? menuItems.map(item => (
+                                    <MenuItem
+                                        key={item.id}
+                                            data={ item }
+                                            addToOrder={ (menuItem) => dispatch({ type: 'add-item-to-order', payload: { menuItem }}) } />
+                                ))
                                 : null
                         }
                     </div>
@@ -31,13 +51,16 @@ function App() {
                     <h2 className="text-4xl font-black text-center">Consumo</h2>
 
                     {
-                        order.length
+                        state.order.length
                             ? <>
-                                <OrderContent order={order} removeFromOrder={removeOrderItem} />
+                                <OrderContent
+                                    order={state.order}
+                                    removeFromOrder={ (orderItemID) => dispatch({ type: 'remove-item-from-order', payload: { orderItemID } }) }
+                                />
 
-                                <Tips setTip={setTip} />
+                                <Tips setTip={ (tip) => dispatch({ type: 'set-tip', payload: { tip } }) } />
 
-                                <OrderTotal order={order} tip={tip} placeOrder={placeOrder} />
+                                <OrderTotal order={state.order} tip={state.tip} placeOrder={ () => dispatch({ type: 'place-order' }) } />
                             </>
                             : <p className="text-center">La orden esta vacia</p>
                     }

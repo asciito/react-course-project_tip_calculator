@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
-import type { OrderItem, MenuItem } from "../types";
+import type { OrderItem } from "../types";
 import { formatToPrice } from "../helpers";
 
 type OrderContentProps = {
     order: OrderItem[],
-    removeFromOrder: (OrderItem: MenuItem) => void
+    removeFromOrder: (OrderItemID: OrderItem['id']) => void
 }
 
 export default function OrderContent({ order, removeFromOrder }: OrderContentProps): ReactElement<OrderContentProps> {
@@ -20,7 +20,7 @@ export default function OrderContent({ order, removeFromOrder }: OrderContentPro
                                 <p className="text-sm">Quantity: {item.qty} - <span className="font-black">{formatToPrice(item.qty * item.price)}</span></p>
                             </div>
 
-                            <button className="bg-red-600 h-8 w-8 rounded-full text-white font-black" onClick={() => removeFromOrder(item)}>X</button>
+                            <button className="bg-red-600 h-8 w-8 rounded-full text-white font-black" onClick={() => removeFromOrder(item.id)}>X</button>
                         </div>
                     );
                 })
